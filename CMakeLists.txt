@@ -9,7 +9,11 @@ set(SFML_STATIC_LIBRARIES ON)
 
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
 
-add_executable(sfml-app main.cpp)
+add_executable(sfml-app
+    src/main.cpp
+    src/bulletList.cpp
+)
+target_include_directories(sfml-app PRIVATE include)
 target_link_libraries(sfml-app PRIVATE SFML::Graphics SFML::Window SFML::System)
 
 # 2. WINDOWS ONLY: Force SFML to compile in static mode (prevents missing DLL errors)
