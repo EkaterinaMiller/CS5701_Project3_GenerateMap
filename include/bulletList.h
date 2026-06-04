@@ -3,39 +3,43 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
+const sf::Color ACTIVE_COLOR = sf::Color::Red;
+const sf::Color INACTIVE_COLOR = sf::Color::White;
+const sf::Color HOVER_COLOR = sf::Color::Yellow;
 class BulletList: public sf::Drawable
 {
-public:
+    public:
+    enum status {normal, clicked};
     class Item: public sf::Drawable
     {
     public:
         Item(const sf::Font& font, const std::string& text, sf::Vector2f position, bool active = false)
-            : mBullet(5), mText(font, text, 20), mPosition(position), mActive(active)
+            : mBullet(5), mText(font, text, 20), mPosition(position), mStatus(status::normal)
         {
-            mBullet.setFillColor(sf::Color::White);
+            mBullet.setFillColor(INACTIVE_COLOR);
             mText.setFillColor(sf::Color::White);
             mBullet.setPosition(mPosition);
             mText.setPosition({mPosition.x + 15, mPosition.y - 10});
         }
-
-        void choose()
-        {
-            mActive = !mActive;
-            mBullet.setFillColor(mActive ? sf::Color::Green : sf::Color::White);
-        }
         std::string getText() const { return mText.getString().toAnsiString(); }
+        void setColor(sf::Color mBulletColor, sf::Color mTextColor)
+        {
+            mBullet.setFillColor(mBulletColor);
+            mText.setFillColor(mTextColor);
+        }
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override
         {
             target.draw(mBullet);
             target.draw(mText);
         }
-
-        bool isActive() const { return mActive; }
+        sf::FloatRect getGlobalBounds() const;
+        void setStatus(status newStatus) { mStatus = newStatus; }
+        status getStatus() const { return mStatus; }
     private:
         sf::CircleShape mBullet;
         sf::Text mText;
         sf::Vector2f mPosition;
-        bool mActive;
+        status mStatus;
     };
     BulletList(sf::Vector2f position, const sf::Font& font, const std::string& title, const std::vector<std::string>& items)
         : mTitle(font, title, 30), mPosition(position)
@@ -48,6 +52,8 @@ public:
         }
     }
     std::vector<std::string> getItems() const;
+    void handleInput(const sf::Event& e, sf::RenderWindow& window);
+    void update();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 private:
     sf::Text mTitle;
