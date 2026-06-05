@@ -83,8 +83,9 @@ int countTotalConflicts(const std::vector<std::vector<int>>& map, bool diagonal)
     return totalConflicts;
 }
 
-void resolveConflictOnePass(std::vector<std::vector<int>>& map, int minValue, int maxValue, bool diagonal)
+int resolveConflictOnePass(std::vector<std::vector<int>>& map, int minValue, int maxValue, bool diagonal)
 {
+    int totalConflicts = 0;
     // Find the cells with the highest conflict count.
     int maxConflicts = -1;
     std::vector<std::pair<int, int>> worstCells;
@@ -92,6 +93,8 @@ void resolveConflictOnePass(std::vector<std::vector<int>>& map, int minValue, in
     for (std::size_t x = 0; x < map.size(); ++x) {
         for (std::size_t y = 0; y < map[x].size(); ++y) {
             int conflicts = countConflicts(map, static_cast<int>(x), static_cast<int>(y), map[x][y], diagonal);
+            totalConflicts += conflicts;
+
             if (conflicts > maxConflicts) {
                 maxConflicts = conflicts;
                 worstCells.clear();
@@ -103,13 +106,13 @@ void resolveConflictOnePass(std::vector<std::vector<int>>& map, int minValue, in
     }
 
     if (maxConflicts <= 0 || worstCells.empty()) {
-        return;
+        return totalConflicts; // No conflicts to resolve
     }
 
     // Try to improve one worst cell only, then return so the GUI can render.
     for (const auto& [x, y] : worstCells) {
         if (lowerConflictValue(map, x, y, minValue, maxValue, diagonal)) {
-            return;
+            return totalConflicts;
         }
     }
 
@@ -117,4 +120,5 @@ void resolveConflictOnePass(std::vector<std::vector<int>>& map, int minValue, in
     const std::size_t randomIndex = static_cast<std::size_t>(rand()) % worstCells.size();
     const auto& [x, y] = worstCells[randomIndex];
     map[x][y] = minValue + rand() % (maxValue - minValue + 1);
+    return totalConflicts;
 }

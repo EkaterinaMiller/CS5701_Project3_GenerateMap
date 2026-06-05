@@ -126,11 +126,11 @@ void Display::update(sf::RenderWindow& window)
         //         }
         //     }
         // }
-        resolveConflictOnePass(mCurrentMap, minValue, maxValue, diagonalOptions[0] == "On");
+        int numConflicts = resolveConflictOnePass(mCurrentMap, minValue, maxValue, diagonalOptions[0] == "On");
 
         // Rebuild from current map data so visual updates stay in sync with algorithm steps.
         mMap.setTiles();
-        int numConflicts = countTotalConflicts(mCurrentMap, diagonalOptions[0] == "On");
+        //int numConflicts = countTotalConflicts(mCurrentMap, diagonalOptions[0] == "On");
         mStatus.setString("Status: Running...\nWith Diagonals: " + vectorToString(diagonalOptions) + "\nTotal Conflicts: " + std::to_string(numConflicts));
 
         // Stop only when solved; otherwise keep running more passes.
