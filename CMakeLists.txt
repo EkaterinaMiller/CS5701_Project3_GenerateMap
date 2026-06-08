@@ -24,20 +24,20 @@ set(SFML_APP_SOURCES
     src/legend.cpp
 )
 
-add_executable(mapGenarator ${SFML_APP_SOURCES})
-target_include_directories(mapGenarator PRIVATE include)
-target_link_libraries(mapGenarator PRIVATE SFML::Graphics SFML::Window SFML::System)
+add_executable(mapGenerator ${SFML_APP_SOURCES})
+target_include_directories(mapGenerator PRIVATE include)
+target_link_libraries(mapGenerator PRIVATE SFML::Graphics SFML::Window SFML::System)
 
 # 2. WINDOWS ONLY: Force SFML to compile in static mode (prevents missing DLL errors)
 if(WIN32)
-    target_compile_definitions(mapGenarator PRIVATE SFML_STATIC)
+    target_compile_definitions(mapGenerator PRIVATE SFML_STATIC)
 endif()
 
 # Automatically copy the assets into the executable output directory on every build
 add_custom_command(
-    TARGET mapGenarator POST_BUILD
+    TARGET mapGenerator POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-            "$<TARGET_FILE_DIR:mapGenarator>"
+            "$<TARGET_FILE_DIR:mapGenerator>"
     COMMENT "Copying game assets to the build output directory..."
 )

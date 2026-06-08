@@ -1,12 +1,12 @@
 # CS5701 Project 3 - Generate Map
 
-This project is an interactive terrain map generator built with SFML and CMake.
+This project is an interactive terrain map generator built with C++ and SFML 3.1.
 It creates a square map with user-selected size and terrain types, then improves the map using a min-conflicts style local search algorithm.
 
 ## Features
 
 - Interactive UI for selecting:
-	- Map size (`50x50`, `75x75`, `100x100`, `200x200`)
+	- Map size (`50x50`, `75x75`, `100x100`, `150x150`, `200x200`)
 	- Terrain set (Water, Beach, Lowland, Forest, Hill, Ridges, Mountain, Snow Tops)
 	- Diagonal constraints (`On`/`Off`)
 	- Animation (`On`/`Off`)
@@ -38,12 +38,12 @@ Install the following before building:
 
 ## Environment Setup and Build
 
-### Windows
+### Windows (tested on Windows 11, 64 bits)
 
 1. Install tools:
-	 - Visual Studio 2022 Build Tools (or full Visual Studio with C++)
-	 - CMake 3.22+
-	 - SFML 3.1.0 (or compatible SFML 3 release)
+	 - VS Code: Download from https://code.visualstudio.com/Download
+	 - CMake: Download installer from https://cmake.org/download/ 
+	 - SFML 3.1.0 (or compatible SFML 3 release) Download SFML and coresponding compiler from https://www.sfml-dev.org/download/sfml/3.1.0/. Unzip and move SFML-3.1.0 and mingw64 (in my case) to the `C:`
 2. Ensure CMake can find SFML:
 	 - Option A: install SFML to `C:/SFML-3.1.0` (matches current `CMakeLists.txt` default on Windows)
 	 - Option B: pass one of these while configuring:
@@ -59,62 +59,111 @@ cmake --build build --config Release
 4. Run:
 
 ```powershell
-.\build\mapGenarator.exe
+cd build
+.\mapGenarator.exe
 ```
 
 Notes:
-- If you see `cannot open output file sfml-app.exe: Permission denied`, close any running `mapGenarator.exe` and rebuild.
+- If you see `cannot open output file sfml-app.exe: Permission denied`, close any running `mapGenarator.exe` and rebuild. 
 
-### Linux
-
+### Linux (tested on WSL)
+You cannot install SFML 3 using apt because Ubuntu’s official package repositories still only offer older versions (usually SFML 2.x). One of the way to instal SFML 3 on Ubunty is build from source.
 1. Install dependencies (Ubuntu/Debian example):
 
 ```bash
 sudo apt update
-sudo apt install -y build-essential cmake libsfml-dev
-```
+sudo apt install -y build-essential cmake libsfml-dev\
+libx11-dev libxrandr-dev libxcursor-dev libxi-dev \
+libgl1-mesa-dev libudev-dev libfreetype-dev \
+libopenal-dev libvorbis-dev libflac-dev libogg-dev \
+libmbedtls-dev libssh2-1-dev libharfbuzz-dev\
+````
 
-2. Configure and build from the project root:
+2. Clone the SFML repository from GitHub and specify the version tag you want
+```bash
+git clone https://github.com/SFML/SFML.git
+cd SFML
+````
+3. Clone the official repository from the SFML GitHub Releases page. To target SFML 3, explicitly check out the master branch or a specific 3.x tag
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+> Note: If you got error about not meating CMake minimu requirements. You need update CMake to the newer vertion. Unfotunalty, `apt` can't do it for the same reason it can't do SFML 3. You can do it with Snap manager.
+3.1 Remove curent CMake and instal a newer vertion with snap:
+```bash
+sudo apt purge --auto-remove cmake
+sudo snap install cmake --classic
+````
+3.2 Rerun cmake comand from step 3. If you get "No such file or derectory" error, you need clear local history
+```bash
+hash -r
+rm -rf CMakeCache.txt CMakeFiles
+````
+Re-run `cmake` command from step 3 again
+> Note: If you get an error, Google the error, install required dependencies, then clear cmake cach and re-run command
+
+4. Compile the codebase and install the generated binaries to your system
+```bash
+cmake --build . --config Release -j$(nproc)
+sudo cmake --install .
+````
+5. If you installed SFML to a standard global directory like /usr/local/lib, configure the dynamic linker to recognize the new `.so` files:
+```bash
+sudo ldconfig
+````
+6. Clone the progect repository and go to the project directory
+```bash
+git clone https://github.com/EkaterinaMiller/CS5701_Project3_GenerateMap.git GenerateMap
+cd GenerateMap
+````
+
+7. Configure and build from the project root:
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ```
 
-3. Run:
+8. Change to the build directoru and run:
 
 ```bash
-./build/sfml-app
+cd build
+./mapGenerator
 ```
 
-If CMake cannot find SFML, configure with:
+> Note (AI genarated, not tested): If CMake cannot find SFML, configure with:
 
 ```bash
 cmake -S . -B build -DCMAKE_PREFIX_PATH=/path/to/SFML
 ```
 
-### macOS
+### macOS (AI generated, not tested)
 
 1. Install tools (Homebrew example):
 
 ```bash
 brew install cmake sfml
-```
-
-2. Configure and build from the project root:
+````
+2. Clone the progect repository and go to the project directory
+```bash
+git clone https://github.com/EkaterinaMiller/CS5701_Project3_GenerateMap.git GenerateMap
+cd GenerateMap
+````
+3. Configure and build from the project root:
 
 ```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ```
 
-3. Run:
+4. Change to the build directoru and run:
 
 ```bash
-./build/sfml-app
+cd build
+./mapGenerator
 ```
 
-If SFML is installed in a non-default location, configure with:
+> Note: If SFML is installed in a non-default location, configure with:
 
 ```bash
 cmake -S . -B build -DCMAKE_PREFIX_PATH=/opt/homebrew
