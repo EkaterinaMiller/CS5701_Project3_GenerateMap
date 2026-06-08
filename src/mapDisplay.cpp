@@ -1,10 +1,11 @@
 #include "mapDisplay.h"
 #include <algorithm>
 
-MapDisplay::MapDisplay(sf::Vector2f position, sf::Vector2f size, const std::vector<std::vector<int>>& tileValues)
+MapDisplay::MapDisplay(sf::Vector2f position, sf::Vector2f size, const std::vector<int>& tileValues, const int& gridSize)
     : mPosition(position),
       mSize(size),
       mTileValues(tileValues),
+    mGridSize(gridSize),
       mPalette({ sf::Color::White})
 {
     //mStartBoard.setPosition(mPosition);
@@ -47,19 +48,14 @@ sf::Color MapDisplay::colorForValue(int value) const
 void MapDisplay::rebuildTiles()
 {
     mTiles.clear();
-    if (mTileValues.empty() || mTileValues.front().empty())
+    if (mTileValues.empty() || mGridSize <= 0)
     {
         throw std::runtime_error("Tile values cannot be empty");
     }
 
-    const std::size_t rows = mTileValues.size();
-    std::size_t cols = 0;
-    //Sanety check. We expect col = row, but we want to be sure
-    for (const auto& row : mTileValues)
-    {
-        cols = std::max(cols, row.size());
-    }
-    if (cols == 0)
+    const std::size_t rows = static_cast<std::size_t>(mGridSize);
+    const std::size_t cols = static_cast<std::size_t>(mGridSize);
+    if (mTileValues.size() != rows * cols)
     {
         throw std::runtime_error("Invalid tile dimensions");
     }
@@ -69,14 +65,15 @@ void MapDisplay::rebuildTiles()
 
     for (std::size_t r = 0; r < rows; ++r)
     {
-        for (std::size_t c = 0; c < mTileValues[r].size(); ++c)
+        for (std::size_t c = 0; c < cols; ++c)
         {
             sf::RectangleShape tile({tileWidth, tileHeight});
             tile.setPosition({
                 mPosition.x + static_cast<float>(c) * tileWidth,
                 mPosition.y + static_cast<float>(r) * tileHeight
             });
-            tile.setFillColor(colorForValue(mTileValues[r][c]));
+            const std::size_t idx = r * cols + c;
+            tile.setFillColor(colorForValue(mTileValues[idx]));
             tile.setOutlineThickness(0.5f);
             tile.setOutlineColor(sf::Color(25, 25, 25));
             mTiles.push_back(tile);
@@ -85,11 +82,13 @@ void MapDisplay::rebuildTiles()
 }
 void MapDisplay::recolorTiles()
 {
+    const std::size_t cols = static_cast<std::size_t>(mGridSize);
     for (std::size_t i = 0; i < mTiles.size(); ++i)
     {
-        const std::size_t row = i / mTileValues.front().size();
-        const std::size_t col = i % mTileValues.front().size();
-        mTiles[i].setFillColor(colorForValue(mTileValues[row][col]));
+        const std::size_t row = i / cols;
+        const std::size_t col = i % cols;
+        const std::size_t idx = row * cols + col;
+        mTiles[i].setFillColor(colorForValue(mTileValues[idx]));
     }
 }
 

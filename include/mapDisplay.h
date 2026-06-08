@@ -7,7 +7,7 @@
 class MapDisplay:public sf::Drawable
 { 
 public:
-    MapDisplay(sf::Vector2f position, sf::Vector2f size, const std::vector<std::vector<int>>& tileValues);
+    MapDisplay(sf::Vector2f position, sf::Vector2f size, const std::vector<int>& tileValues, const int& gridSize);
     //void setTiles(); same as rebuild.
     void setPalette(const std::vector<sf::Color>& palette);
     void rebuildTiles();
@@ -22,7 +22,8 @@ private:
     //sf::RectangleShape mStartBoard;
     sf::Vector2f mPosition;
     sf::Vector2f mSize;
-    const std::vector<std::vector<int>>& mTileValues;
+    const std::vector<int>& mTileValues;
+    const int& mGridSize;
     std::vector<sf::Color> mPalette;
     std::vector<sf::RectangleShape> mTiles;
 };

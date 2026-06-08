@@ -10,12 +10,13 @@ Display::Display(sf::Font& font)
       mLegend(TERRAIN_COLORS, {360, 90}, {20, 20}),//position and size of the legend
       mDiagonals({10, 500}, font, "Diagonals", {"Off", "On"}, true),
       mAnimation({180, 500}, font, "Animation", {"Off", "On"}, true),
-      mMap({450, 30}, {700, 700}, mCurrentMap),//position and size of the map display
+            mCurrentMapSize(1),
+            mMap({450, 30}, {700, 700}, mCurrentMap, mCurrentMapSize),//position and size of the map display
       mGenarateMap("Generate Map", {150, 450}, {200, 50}, sf::Color::Blue),
       mRun("Run", {150, 670}, {200, 50}, sf::Color::Green),
       mStatus(font, "Status:Waiting...\nChoose Size and Terrain and click Generate Map", 20)
 {
-    mCurrentMap = {{0}};//User have not choose any options, so we display a simple map with one tile. 
+        mCurrentMap = {0};//User have not choose any options, so we display a simple map with one tile. 
     mMap.rebuildTiles();
     mStatus.setFillColor(sf::Color::White);
     mStatus.setPosition({50, 720});
@@ -57,6 +58,7 @@ void Display::handleInput(sf::RenderWindow& window)
                     int minValue = 1;
                     int maxValue = terrainTypes.size();
                     int size = std::stoi(mapSizes[0]);
+                    mCurrentMapSize = size;
                     mCurrentMap = generateMap(minValue, maxValue, size);
                     mMap.rebuildTiles();
                     std::vector<sf::Color> palette{ sf::Color::White}; // Default color for 0  
@@ -86,7 +88,7 @@ void Display::handleInput(sf::RenderWindow& window)
             if (mRun.handleInput(*event, window)) {
                 if (mDiagonals.getItems().empty()){
                     mStatus.setString("Status: Please select diagonal option before running the algorithm.");
-                }else if (mCurrentMap.empty() || mCurrentMap.front().empty()) {
+                }else if (mCurrentMap.empty()) {
                     mStatus.setString("Status: Please generate a map before running the algorithm.");
                 }else if (mAnimation.getItems().empty()) {
                     mStatus.setString("Status: Please select animation option before running the algorithm.");
@@ -138,7 +140,7 @@ void Display::update(sf::RenderWindow& window)
         int lastNumConflicts = minConflicts;
 
         for (int pass = 0; pass < passesPerFrame && mState == State::Running; ++pass) {
-            int numConflicts = resolveConflictOnePass(mCurrentMap, minValue, maxValue, diagonalOptions[0] == "On");
+            int numConflicts = resolveConflictOnePass(mCurrentMap, mCurrentMapSize, minValue, maxValue, diagonalOptions[0] == "On");
             lastNumConflicts = numConflicts;
             numOfIterations++;
 

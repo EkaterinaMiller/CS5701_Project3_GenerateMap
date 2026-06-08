@@ -36,7 +36,8 @@ private:
     Button mGenarateMap;
     Button mRun;
     sf::Text mStatus;
-    std::vector<std::vector<int>> mCurrentMap;
+    std::vector<int> mCurrentMap;
+    int mCurrentMapSize;
     MapDisplay mMap;
     sf::Clock mStartTime;
 
