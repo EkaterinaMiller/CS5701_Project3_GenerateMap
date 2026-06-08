@@ -1,3 +1,10 @@
+/** 
+ * @file legend.cpp
+ * @author Ekaterina Miller
+ * @brief Implementation of the Legend class.
+ * @date 2026-06-08
+ * 
+ */
 #include "legend.h"
 Legend::Legend(const std::array<sf::Color, 9> &palette, sf::Vector2f position, sf::Vector2f boxSize)
     : mPosition(position), mBoxSize(boxSize)

@@ -1,3 +1,12 @@
+/**
+ * @file bulletList.h
+ * @author Ekaterina Miller
+ * @brief Definition of the BulletList class, 
+ *  which represents a list of items with bullet points, 
+ *  allowing for selection and interaction.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef BULLETLIST
 #define BULLETLIST
 #include <vector>

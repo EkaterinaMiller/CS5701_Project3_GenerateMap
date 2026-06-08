@@ -1,3 +1,10 @@
+/**
+ * @file helpers.h
+ * @author Ekaterina Miller
+ * @brief Helper functions for common operations.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef HELPERS_H
 #define HELPERS_H
 #include <vector>

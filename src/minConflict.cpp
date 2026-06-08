@@ -1,3 +1,10 @@
+/** 
+ * @file minConflict.cpp
+ * @author Ekaterina Miller
+ * @brief Implementation of the min-conflicts algorithm.
+ * @date 2026-06-08
+ * 
+ */
 #include "minConflict.h"
 #include <cstdlib>
 #include <utility>
@@ -5,15 +12,15 @@
 
 namespace
 {
-int at(const std::vector<int>& map, int size, int x, int y)
-{
-    return map[static_cast<std::size_t>(x * size + y)];
-}
+    int at(const std::vector<int>& map, int size, int x, int y)
+    {
+        return map[static_cast<std::size_t>(x * size + y)];
+    }
 
-int& at(std::vector<int>& map, int size, int x, int y)
-{
-    return map[static_cast<std::size_t>(x * size + y)];
-}
+    int& at(std::vector<int>& map, int size, int x, int y)
+    {
+        return map[static_cast<std::size_t>(x * size + y)];
+    }
 }
 
 std::vector<int> generateMap(int minValue, int maxValue, int size)
@@ -133,7 +140,8 @@ int resolveConflictOnePass(std::vector<int>& map, int size, int minValue, int ma
     // If none of the worst cells can be improved, perturb one of them to escape the local minimum.
     const std::size_t randomIndex = static_cast<std::size_t>(rand()) % worstCells.size();
     const auto& [x, y] = worstCells[randomIndex];
-    at(map, size, x, y) = minValue + rand() % (maxValue - minValue + 1);//does not work on diagonals if numTerains >5
+    //at function change 1D vector coordinates to 2D 
+    at(map, size, x, y) = minValue + rand() % (maxValue - minValue + 1);
     //change its neighbors to the cell value
     makeNeighborValuesSame(map, size, x, y, diagonal);//did not work along. Worsth then just changing the cell value. 
     //but in combination with setting one "bad" cel to the random values, it seems to help escape the local minimum.

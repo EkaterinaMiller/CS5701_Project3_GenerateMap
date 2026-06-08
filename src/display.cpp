@@ -5,7 +5,7 @@
 
 Display::Display(sf::Font& font)
     : mState(State::Waiting),
-      mMapSize({10, 30}, font, "Size", {"50x50", "75x75", "100x100", "200x200"}, true),
+      mMapSize({10, 30}, font, "Size", {"50x50", "75x75", "100x100", "150x150", "200x200"}, true),
       mTerrainType({180, 30}, font, "Terrain", {"Water", "Beach", "Lowland", "Forest", "Hill","Ridges", "Mountain", "Snow Tops"}, false),
       mLegend(TERRAIN_COLORS, {360, 90}, {20, 20}),//position and size of the legend
       mDiagonals({10, 500}, font, "Diagonals", {"Off", "On"}, true),
@@ -54,7 +54,7 @@ void Display::handleInput(sf::RenderWindow& window)
                     mStatus.setString("Status: Generating Map...\nSize: " + vectorToString(mapSizes) 
                     + "\nTerrain: " + vectorToString(terrainTypes));
                 
-                    // Generate the map using the min-conflicts algorithm
+                    // Generate the map 
                     int minValue = 1;
                     int maxValue = terrainTypes.size();
                     int size = std::stoi(mapSizes[0]);
@@ -82,7 +82,9 @@ void Display::handleInput(sf::RenderWindow& window)
                         }
                     }
                     mMap.setPalette(palette);
-                    mStatus.setString("Status: Map Generated!\nClick Run to start the algorithm.");
+                    mStatus.setString("Status: Map Generated!\nSize: " + std::to_string(size) 
+                    + "   Terrain: " + vectorToString(terrainTypes)+
+                    "\nClick Run to start the algorithm.");
                 }
             }
             if (mRun.handleInput(*event, window)) {

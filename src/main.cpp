@@ -1,9 +1,16 @@
+/** 
+ * @file main.cpp
+ * @author Ekaterina Miller
+ * @brief Main function for the map genarator app.
+ * @date 2026-06-08
+ * 
+ */
 #include "display.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({1200, 800}), "Genarate map with no conflicts!");
+    auto window = sf::RenderWindow(sf::VideoMode({1200, 800}), "Generate map with no conflicts!");
     //window.setFramerateLimit(60);
     sf::Font font;
     if (!font.openFromFile("VCR_OSD_MONO_1.001.ttf"))

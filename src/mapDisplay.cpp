@@ -5,20 +5,10 @@ MapDisplay::MapDisplay(sf::Vector2f position, sf::Vector2f size, const std::vect
     : mPosition(position),
       mSize(size),
       mTileValues(tileValues),
-    mGridSize(gridSize),
+      mGridSize(gridSize),
       mPalette({ sf::Color::White})
-{
-    //mStartBoard.setPosition(mPosition);
-    //mStartBoard.setSize(mSize);
-    //mStartBoard.setFillColor(sf::Color::Black);
-    //mStartBoard.setOutlineThickness(1.f);
-    //mStartBoard.setOutlineColor(sf::Color(90, 90, 90));
-}
+{}
 
-// void MapDisplay::setTiles()
-// {
-//     rebuildTiles();
-// }
 
 void MapDisplay::setPalette(const std::vector<sf::Color>& palette)
 {
@@ -33,7 +23,7 @@ sf::Color MapDisplay::colorForValue(int value) const
 {
     if (value < 0 || mPalette.empty())
     {
-        return sf::Color::Magenta;
+        return sf::Color::Magenta;//to see if something is wrong with the palette or the value
     }
 
     const std::size_t index = static_cast<std::size_t>(value);

@@ -1,3 +1,11 @@
+/**
+ * @file display.h
+ * @author Ekaterina Miller
+ * @brief Definition of the Display class, which manages the overall display and 
+ *      user interaction.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef DISPLAY_H
 #define DISPLAY_H
 #include "bulletList.h"

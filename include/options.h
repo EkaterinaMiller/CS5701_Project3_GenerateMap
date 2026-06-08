@@ -1,3 +1,10 @@
+/** 
+ * @file options.h
+ * @author Ekaterina Miller
+ * @brief Definition of the options for the game, including terrain types and their corresponding colors.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef OPTIONS_H
 #define OPTIONS_H 
 #include <SFML/Graphics.hpp> 

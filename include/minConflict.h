@@ -1,3 +1,10 @@
+/**
+ * @file minConflict.h
+ * @author Ekaterina Miller
+ * @brief Functions for generating a map and using the min-conflicts algorithm.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef MINCONFLICT_H
 #define MINCONFLICT_H   
 

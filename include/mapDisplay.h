@@ -1,3 +1,10 @@
+/** 
+ * @file mapDisplay.h
+ * @author Ekaterina Miller
+ * @brief Definition of the MapDisplay class, which handles the rendering of the game map.
+ * @date 2026-06-08
+ * 
+ */
 #ifndef MAPDISPLAY_H
 #define MAPDISPLAY_H 
 #include <SFML/Graphics.hpp>

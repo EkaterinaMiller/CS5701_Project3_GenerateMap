@@ -1,3 +1,10 @@
+/** 
+ * @file bulletList.cpp
+ * @author Ekaterina Miller
+ * @brief Implementation of the BulletList class.
+ * @date 2026-06-08
+ * 
+ */
 #include "bulletList.h"
 sf::FloatRect BulletList::Item::getGlobalBounds() const { 
             float positionX = std::min(mBullet.getGlobalBounds().position.x, mText.getGlobalBounds().position.x);
