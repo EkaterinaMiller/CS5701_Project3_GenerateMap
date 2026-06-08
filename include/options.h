@@ -1,7 +1,8 @@
 #ifndef OPTIONS_H
 #define OPTIONS_H 
-#include <SFML/Graphics.hpp>  
-const sf::Color TERRAIN_COLORS[] = {
+#include <SFML/Graphics.hpp> 
+#include <array> 
+const std::array<sf::Color, 9> TERRAIN_COLORS = {
     sf::Color::White,               // 0
     sf::Color::Blue,                 // 1
     sf::Color::Yellow,               // 2

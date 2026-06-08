@@ -7,6 +7,7 @@ Display::Display(sf::Font& font)
     : mState(State::Waiting),
       mMapSize({10, 30}, font, "Size", {"50x50", "75x75", "100x100", "200x200"}, true),
       mTerrainType({180, 30}, font, "Terrain", {"Water", "Beach", "Lowland", "Forest", "Hill","Ridges", "Mountain", "Snow Tops"}, false),
+      mLegend(TERRAIN_COLORS, {360, 90}, {20, 20}),//position and size of the legend
       mDiagonals({10, 500}, font, "Diagonals", {"Off", "On"}, true),
       mAnimation({180, 500}, font, "Animation", {"Off", "On"}, true),
       mMap({450, 30}, {700, 700}, mCurrentMap),//position and size of the map display
@@ -185,6 +186,7 @@ void Display::render(sf::RenderWindow& window)
     window.clear();
     window.draw(mMapSize);
     window.draw(mTerrainType);
+    window.draw(mLegend);
     window.draw(mDiagonals);
     window.draw(mAnimation);
     window.draw(mMap);  

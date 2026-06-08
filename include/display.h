@@ -5,6 +5,7 @@
 #include "button.h"
 #include "minConflict.h"
 #include "options.h"
+#include "legend.h"
 enum class State
 {
     Waiting,
@@ -27,8 +28,9 @@ private:
     //sf::RenderWindow mWindow;
     // bool mIsDone;
     State mState;
-    BulletList mTerrainType;
     BulletList mMapSize;
+    BulletList mTerrainType;
+    Legend mLegend;
     BulletList mDiagonals;
     BulletList mAnimation;
     Button mGenarateMap;
