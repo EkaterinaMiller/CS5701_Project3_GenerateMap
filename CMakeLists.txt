@@ -10,9 +10,15 @@ if(WIN32)
 endif()
 
 # 1. Tell CMake to explicitly look for static SFML libraries
-set(SFML_STATIC_LIBRARIES ON)
+#set(SFML_STATIC_LIBRARIES ON)
+#Add Main to remove consol when click on executable
+find_package(SFML 3 REQUIRED COMPONENTS Main Graphics Window System)
 
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+# Optional: also force static MinGW runtime if using MinGW/GCC
+# if(MINGW)
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -static-libgcc -static-libstdc++")
+#     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+# endif()
 
 set(SFML_APP_SOURCES
     src/main.cpp
@@ -24,13 +30,15 @@ set(SFML_APP_SOURCES
     src/legend.cpp
 )
 
-add_executable(mapGenerator ${SFML_APP_SOURCES})
+add_executable(mapGenerator WIN32 ${SFML_APP_SOURCES})
 target_include_directories(mapGenerator PRIVATE include)
-target_link_libraries(mapGenerator PRIVATE SFML::Graphics SFML::Window SFML::System)
+#target_link_libraries(mapGenerator PRIVATE SFML::Graphics SFML::Window SFML::System)
+#Remove terminal when click on executable
+target_link_libraries(mapGenerator PRIVATE SFML::Main SFML::Graphics SFML::Window SFML::System)
 
 # 2. WINDOWS ONLY: Force SFML to compile in static mode (prevents missing DLL errors)
 if(WIN32)
-    target_compile_definitions(mapGenerator PRIVATE SFML_STATIC)
+    target_compile_definitions(mapGenerator PRIVATE include)#SFML_STATIC)
 endif()
 
 # Automatically copy the assets into the executable output directory on every build
